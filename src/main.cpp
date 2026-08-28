@@ -366,7 +366,7 @@ void PrintPlan(json_object *response, bool start) {
     json_object *ensure = json_object_new_object();
     json_object_object_add(ensure, "type", json_object_new_string("ensure"));
     json_object_object_add(ensure, "name",
-                           json_object_new_string("easytier-core"));
+                           json_object_new_string("easytier_core"));
     json_object *command = json_object_new_array();
     json_object_array_add(
         command, json_object_new_string("bin/onekvm-easytier-controller"));

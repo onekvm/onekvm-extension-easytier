@@ -20,7 +20,7 @@ printf '%s' "$enable_output" | grep -q '"type":"remove_all"'
 printf '%s\n' '{"service_enabled":true,"network_name":"onekvm-lab","network_secret":"secret","peers":"tcp://public.easytier.cn:11010","dhcp":true,"ipv4":"","hostname":"onekvm","listen_port":11010}' >"$test_root/config/config.json"
 enable_output=$(printf '%s' '{"event":"enable","extension_id":"easytier","enabled":true}' | run_controller)
 printf '%s' "$enable_output" | grep -q '"type":"ensure"'
-printf '%s' "$enable_output" | grep -q '"name":"easytier-core"'
+printf '%s' "$enable_output" | grep -q '"name":"easytier_core"'
 
 change_output=$(printf '%s' '{"event":"config_changed","extension_id":"easytier","enabled":true}' | run_controller)
 printf '%s' "$change_output" | grep -q '"type":"remove_all"'
