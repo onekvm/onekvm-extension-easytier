@@ -1,0 +1,74 @@
+{
+  "manifest_version": 1,
+  "id": "easytier",
+  "i18n": {
+    "default": {"name": "EasyTier", "description": "Connect OneKVM to an EasyTier network."},
+    "zh": {"name": "EasyTier", "description": "将 OneKVM 连接到 EasyTier 网络。"},
+    "zh-TW": {"name": "EasyTier", "description": "將 OneKVM 連接到 EasyTier 網路。"}
+  },
+  "version": "@VERSION@",
+  "api_version": 2,
+  "architecture": "@ARCH@",
+  "kind": "service",
+  "author": "OneKVM",
+  "homepage": "https://github.com/onekvm/onekvm-extension-easytier",
+  "entrypoint": "bin/onekvm-easytier-controller",
+  "kernel_modules": ["tun"],
+  "permissions": ["network", "network-admin"],
+  "capabilities": [],
+  "services": [{
+    "id": "easytier_core",
+    "i18n": {
+      "default": {"name": "easytier-core", "description": "Decentralized EasyTier mesh VPN client."},
+      "zh": {"name": "easytier-core", "description": "去中心化 EasyTier 组网客户端。"},
+      "zh-TW": {"name": "easytier-core", "description": "去中心化 EasyTier 組網用戶端。"}
+    }
+  }],
+  "icon": {"source": "custom", "path": "web/logo.png"},
+  "page": {"title": "EasyTier", "renderer": "vue", "entrypoint": "web/page.js", "icon": {"source": "custom", "path": "web/logo.png"}},
+  "controller": {"runtime": "executable", "entrypoint": "bin/onekvm-easytier-controller", "arguments": ["--controller"], "timeout_seconds": 5},
+  "methods": {"status": {}},
+  "settings_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["service_enabled", "network_name", "network_secret", "peers", "dhcp", "ipv4", "hostname", "listen_port"],
+    "properties": {
+      "service_enabled": {
+        "type": "boolean", "title": "EasyTier client", "default": true,
+        "i18n": {"default": "EasyTier client", "zh": "EasyTier 客户端", "zh-TW": "EasyTier 用戶端"}
+      },
+      "network_name": {
+        "type": "string", "title": "Network name", "default": "", "maxLength": 64,
+        "i18n": {"default": "Network name", "zh": "网络名称", "zh-TW": "網路名稱"}
+      },
+      "network_secret": {
+        "type": "string", "format": "password", "title": "Network secret", "default": "", "maxLength": 4096,
+        "i18n": {"default": "Network secret", "zh": "网络密钥", "zh-TW": "網路金鑰"}
+      },
+      "peers": {
+        "type": "string", "title": "Shared nodes", "default": "tcp://public.easytier.cn:11010", "maxLength": 1024,
+        "i18n": {"default": "Shared nodes", "zh": "公共节点", "zh-TW": "公共節點"}
+      },
+      "dhcp": {
+        "type": "boolean", "title": "Assign virtual IP automatically", "default": true,
+        "i18n": {"default": "Assign virtual IP automatically", "zh": "自动分配虚拟 IP", "zh-TW": "自動分配虛擬 IP"}
+      },
+      "ipv4": {
+        "type": "string", "title": "Virtual IPv4", "default": "", "maxLength": 18,
+        "i18n": {"default": "Virtual IPv4", "zh": "虚拟 IPv4", "zh-TW": "虛擬 IPv4"}
+      },
+      "hostname": {
+        "type": "string", "title": "Hostname", "default": "onekvm", "maxLength": 253,
+        "i18n": {"default": "Hostname", "zh": "主机名", "zh-TW": "主機名稱"}
+      },
+      "listen_port": {
+        "type": "integer", "title": "Listen port", "default": 11010, "minimum": 1, "maximum": 65535,
+        "i18n": {"default": "Listen port", "zh": "监听端口", "zh-TW": "監聽連接埠"}
+      }
+    }
+  },
+  "secret_fields": ["/network_secret"],
+  "memory_budget": "32M",
+  "resource_limits": {"memory_max": "48M", "cpu_quota": "50%", "tasks_max": 64, "limit_nofile": 1024},
+  "healthcheck": {"type": "exec", "command": ["bin/onekvm-easytier-controller", "--health"], "timeout_seconds": 5}
+}
