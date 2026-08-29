@@ -93,6 +93,34 @@ json_object *ParseJSON(std::string_view input, std::string &error) {
   return value;
 }
 
+json_object *ReadCinJSON(std::string &error) {
+  json_tokener *tokener = json_tokener_new_ex(32);
+  if (tokener == nullptr) {
+    error = "allocate JSON parser";
+    return nullptr;
+  }
+  json_tokener_set_flags(tokener, JSON_TOKENER_STRICT);
+  char buf[4096];
+  json_object *value = nullptr;
+  json_tokener_error status = json_tokener_continue;
+  while (status == json_tokener_continue) {
+    std::cin.read(buf, sizeof(buf));
+    const std::streamsize n = std::cin.gcount();
+    if (n <= 0)
+      break;
+    value = json_tokener_parse_ex(tokener, buf, static_cast<int>(n));
+    status = json_tokener_get_error(tokener);
+  }
+  json_tokener_free(tokener);
+  if (status != json_tokener_success || value == nullptr) {
+    if (value != nullptr)
+      json_object_put(value);
+    error = "invalid JSON";
+    return nullptr;
+  }
+  return value;
+}
+
 bool OptionalString(json_object *root, const char *name, std::string &output) {
   json_object *value = nullptr;
   if (!json_object_object_get_ex(root, name, &value))
@@ -385,7 +413,8 @@ void PrintPlan(json_object *response, bool start) {
   if (response != nullptr)
     json_object_object_add(plan, "response", response);
   std::cout << json_object_to_json_string_ext(plan, JSON_C_TO_STRING_PLAIN)
-            << '\n';
+            << '\n'
+            << std::flush;
   json_object_put(plan);
 }
 
@@ -409,7 +438,8 @@ void PrintReplacePlan() {
   json_object_array_add(actions, ensure);
   json_object_object_add(plan, "actions", actions);
   std::cout << json_object_to_json_string_ext(plan, JSON_C_TO_STRING_PLAIN)
-            << '\n';
+            << '\n'
+            << std::flush;
   json_object_put(plan);
 }
 
@@ -438,14 +468,13 @@ void PrintStatus(const Settings &settings) {
   json_object_object_add(plan, "actions", json_object_new_array());
   json_object_object_add(plan, "response", response);
   std::cout << json_object_to_json_string_ext(plan, JSON_C_TO_STRING_PLAIN)
-            << '\n';
+            << '\n'
+            << std::flush;
   json_object_put(plan);
 }
 
 bool Controller(std::string &error) {
-  std::string input((std::istreambuf_iterator<char>(std::cin)),
-                    std::istreambuf_iterator<char>());
-  json_object *root = ParseJSON(input, error);
+  json_object *root = ReadCinJSON(error);
   if (root == nullptr || !json_object_is_type(root, json_type_object)) {
     if (root != nullptr)
       json_object_put(root);

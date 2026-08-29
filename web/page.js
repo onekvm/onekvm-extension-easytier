@@ -73,7 +73,8 @@
         loading.value = true
         if (showSpinner) busy.value = 'refresh'
         try {
-          status.value = await props.host.invoke('status')
+          const next = await props.host.invoke('status')
+          status.value = next && typeof next === 'object' && next.response ? next.response : (next || status.value)
           error.value = ''
         } catch (reason) {
           error.value = reason instanceof Error ? reason.message : String(reason)
@@ -112,7 +113,7 @@
           h(NButton, { secondary: true, size: 'small', loading: busy.value === 'refresh', disabled: Boolean(busy.value && busy.value !== 'refresh'), onClick: () => refresh(true) }, { default: () => labels.refresh }),
         ]),
         error.value ? h(NAlert, { type: 'error', showIcon: false }, { default: () => error.value }) : null,
-        h(NSpin, { show: loading.value && !status.value.networkName }, { default: () => h('article', { class: 'ok-card ok-status' }, [
+        h(NSpin, { show: loading.value && busy.value === 'refresh' }, { default: () => h('article', { class: 'ok-card ok-status' }, [
           h(NTag, { size: 'small', type: status.value.ready ? 'success' : 'warning', bordered: false }, { default: () => status.value.ready ? labels.ready : labels.missing }),
           status.value.networkName ? h('span', `${labels.network}: ${status.value.networkName}`) : h('span', { class: 'ok-muted' }, labels.offline),
           Array.isArray(status.value.peers) && status.value.peers.length ? h('small', `${labels.peers}: ${status.value.peers.join(', ')}`) : null,
