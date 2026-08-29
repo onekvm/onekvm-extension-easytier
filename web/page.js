@@ -108,15 +108,12 @@
 
       return () => h('section', { class: 'ok-page' }, [
         h('div', { class: 'ok-heading' }, [
-          h('div', [h('h2', labels.title), h('p', labels.description)]),
-          h(NButton, { secondary: true, loading: busy.value === 'refresh', disabled: Boolean(busy.value && busy.value !== 'refresh'), onClick: () => refresh(true) }, { default: () => labels.refresh }),
+          h('p', labels.description),
+          h(NButton, { secondary: true, size: 'small', loading: busy.value === 'refresh', disabled: Boolean(busy.value && busy.value !== 'refresh'), onClick: () => refresh(true) }, { default: () => labels.refresh }),
         ]),
         error.value ? h(NAlert, { type: 'error', showIcon: false }, { default: () => error.value }) : null,
-        h(NSpin, { show: loading.value && !status.value.networkName }, { default: () => h('article', { class: 'ok-card' }, [
-          h('div', { class: 'ok-status-title' }, [
-            h('strong', labels.status),
-            h(NTag, { type: status.value.ready ? 'success' : 'warning', bordered: false }, { default: () => status.value.ready ? labels.ready : labels.missing }),
-          ]),
+        h(NSpin, { show: loading.value && !status.value.networkName }, { default: () => h('article', { class: 'ok-card ok-status' }, [
+          h(NTag, { size: 'small', type: status.value.ready ? 'success' : 'warning', bordered: false }, { default: () => status.value.ready ? labels.ready : labels.missing }),
           status.value.networkName ? h('span', `${labels.network}: ${status.value.networkName}`) : h('span', { class: 'ok-muted' }, labels.offline),
           Array.isArray(status.value.peers) && status.value.peers.length ? h('small', `${labels.peers}: ${status.value.peers.join(', ')}`) : null,
         ]) }),
@@ -142,11 +139,11 @@
     apiVersion: 1,
     component: Page,
     styles: [`
-      .ok-page { display: grid; gap: 14px; }
-      .ok-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-      .ok-heading h2 { margin: 0; font-size: 18px; }
-      .ok-heading p { margin: 5px 0 0; color: var(--n-text-color-3, #888); max-width: 56ch; line-height: 1.45; }
+      .ok-page { display: grid; gap: 10px; }
+      .ok-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .ok-heading p { margin: 0; color: var(--n-text-color-3, #888); font-size: 13px; line-height: 1.4; }
       .ok-card { display: grid; gap: 12px; padding: 14px; border: 1px solid var(--n-border-color, #444); border-radius: 8px; }
+      .ok-card.ok-status { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; min-height: 36px; padding: 6px 12px; border-radius: 6px; }
       .ok-status-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
       .ok-muted, .ok-card small { color: var(--n-text-color-3, #888); }
       .ok-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 13px; }
