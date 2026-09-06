@@ -1,0 +1,18 @@
+Fix crate time 0.3.29 on rustc >= 1.80 (E0282 Box<_>).
+
+Rust 1.80 made FromIterator for Box<_> ambiguous (slice vs str). Collect
+into Vec then box the slice so rathole v0.5.0 can build without bumping
+the locked time crate.
+
+--- a/src/format_description/parse/mod.rs
++++ b/src/format_description/parse/mod.rs
+@@ -81,8 +81,9 @@
+     let ast = ast::parse::<_, VERSION>(&mut lexed);
+     let format_items = format_item::parse(ast);
+     let items = format_items
+         .map(|res| res.map(Into::into))
+-        .collect::<Result<Box<_>, _>>()?;
++        .collect::<Result<Vec<_>, _>>()?
++        .into_boxed_slice();
+     Ok(items.into())
+ }
