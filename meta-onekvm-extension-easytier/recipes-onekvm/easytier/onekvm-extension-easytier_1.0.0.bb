@@ -50,19 +50,21 @@ ONEKVM_EXTENSION_ID = "easytier"
 ONEKVM_EXTENSION_API_VERSION = "2"
 ONEKVM_EXTENSION_MANIFEST_TEMPLATE = "${UNPACKDIR}/extension/manifest.json.in"
 
-PACKAGES = "${PN}-dbg ${PN}-runtime ${PN}"
+PACKAGES = "${PN}-dbg easytier ${PN}"
 FILES:${PN} = "\
     ${ONEKVM_EXTENSION_ROOT}/bin/onekvm-easytier-controller \
     ${ONEKVM_EXTENSION_ROOT}/manifest.json \
     ${ONEKVM_EXTENSION_ROOT}/web \
 "
-FILES:${PN}-runtime = "\
+FILES:easytier = "\
     ${ONEKVM_EXTENSION_ROOT}/bin/easytier-core \
     ${ONEKVM_EXTENSION_ROOT}/bin/easytier-cli \
 "
-RDEPENDS:${PN} += "${PN}-runtime (= ${EXTENDPKGV})"
+RDEPENDS:${PN} += "easytier"
+RREPLACES:easytier += "${PN}-runtime (<= 1.0.0-r0)"
+RCONFLICTS:easytier += "${PN}-runtime (<= 1.0.0-r0)"
 INSANE_SKIP:${PN} += "already-stripped"
-INSANE_SKIP:${PN}-runtime += "already-stripped"
+INSANE_SKIP:easytier += "already-stripped"
 INSANE_SKIP:${PN}-dbg += "buildpaths"
 
 do_compile:prepend() {
