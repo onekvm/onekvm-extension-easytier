@@ -24,8 +24,8 @@ control plane.
 ## Install and enable
 
 ```sh
-onekvm-plugin-manager enable easytier
-onekvm-plugin-manager disable easytier
+onekvm-extension enable easytier
+onekvm-extension disable easytier
 ```
 
 NanoKVM `extension_memory_budget` is 64M. Enable EasyTier (32M) only when

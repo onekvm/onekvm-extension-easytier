@@ -21,8 +21,8 @@
 ## 安装与启用
 
 ```sh
-onekvm-plugin-manager enable easytier
-onekvm-plugin-manager disable easytier
+onekvm-extension enable easytier
+onekvm-extension disable easytier
 ```
 
 NanoKVM 的 `extension_memory_budget` 是 64M。启用 EasyTier（32M）时，请先关掉
