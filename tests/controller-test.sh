@@ -45,6 +45,7 @@ chmod 0755 "$test_root/bin/easytier-core"
 ONEKVM_EXTENSION_CONFIG="$test_root/config" \
 ONEKVM_EXTENSION_DATA="$test_root/data" \
 ONEKVM_EXTENSION_SOCKET="$test_root/sockets" \
+ONEKVM_EASYTIER_CORE="$test_root/bin/easytier-core" \
     "$test_root/bin/onekvm-easytier-controller" --run
 grep -Fxq -- "-c" "$test_root/data/easytier-arguments"
 grep -q 'network_name = "onekvm-lab"' "$test_root/data/easytier.toml"

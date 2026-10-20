@@ -282,13 +282,11 @@ bool Ready(const Settings &settings) {
 }
 
 std::string Executable(std::string_view name) {
-  std::vector<char> buffer(4096);
-  const ssize_t length =
-      readlink("/proc/self/exe", buffer.data(), buffer.size() - 1);
-  if (length <= 0)
-    return "bin/" + std::string(name);
-  buffer[static_cast<std::size_t>(length)] = '\0';
-  return (std::filesystem::path(buffer.data()).parent_path() / name).string();
+  if (name == "easytier-core")
+    return EnvironmentPath("ONEKVM_EASYTIER_CORE", "/usr/bin/easytier-core");
+  if (name == "easytier-cli")
+    return EnvironmentPath("ONEKVM_EASYTIER_CLI", "/usr/bin/easytier-cli");
+  return std::string(name);
 }
 
 [[noreturn]] void Exec(std::vector<std::string> arguments) {

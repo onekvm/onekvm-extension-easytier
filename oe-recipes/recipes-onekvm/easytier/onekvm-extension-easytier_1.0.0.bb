@@ -1,11 +1,14 @@
 SUMMARY = "OneKVM EasyTier mesh VPN service extension"
 HOMEPAGE = "https://github.com/EasyTier/EasyTier"
 LICENSE = "GPL-3.0-only & LGPL-3.0-only"
+ONEKVM_EXTENSION_SOURCE ?= "${UNPACKDIR}/extension"
+ONEKVM_EXTENSION_SOURCE_REV ?= "${ONEKVM_COMPONENT_SRCREV}"
+do_compile[vardeps] += "ONEKVM_EXTENSION_SOURCE_REV"
 LIC_FILES_CHKSUM = "\
-    file://../extension/LICENSE;md5=1ebbd3e34237af26da5dc08a4e440464 \
+    file://${ONEKVM_EXTENSION_SOURCE}/LICENSE;md5=1ebbd3e34237af26da5dc08a4e440464 \
     file://LICENSE;md5=3000208d539ec061b899bce1d9ce9404 \
 "
-PR = "r1"
+PR = "r3"
 
 ONEKVM_COMPONENT_GIT_URI ??= "git://github.com/onekvm/onekvm-extension-easytier.git;protocol=https;branch=main"
 ONEKVM_COMPONENT_SRCREV ??= ""
@@ -48,7 +51,7 @@ do_configure:prepend() {
 DEPENDS += "json-c protobuf-native"
 ONEKVM_EXTENSION_ID = "easytier"
 ONEKVM_EXTENSION_API_VERSION = "2"
-ONEKVM_EXTENSION_MANIFEST_TEMPLATE = "${UNPACKDIR}/extension/manifest.json.in"
+ONEKVM_EXTENSION_MANIFEST_TEMPLATE = "${ONEKVM_EXTENSION_SOURCE}/manifest.json.in"
 
 PACKAGES = "${PN}-dbg easytier ${PN}"
 FILES:${PN} = "\
@@ -57,10 +60,10 @@ FILES:${PN} = "\
     ${ONEKVM_EXTENSION_ROOT}/web \
 "
 FILES:easytier = "\
-    ${ONEKVM_EXTENSION_ROOT}/bin/easytier-core \
-    ${ONEKVM_EXTENSION_ROOT}/bin/easytier-cli \
+    ${bindir}/easytier-core \
+    ${bindir}/easytier-cli \
 "
-RDEPENDS:${PN} += "easytier"
+RDEPENDS:${PN} += "easytier onekvm-kernel-module-tun"
 RREPLACES:easytier += "${PN}-runtime (<= 1.0.0-r0)"
 RCONFLICTS:easytier += "${PN}-runtime (<= 1.0.0-r0)"
 INSANE_SKIP:${PN} += "already-stripped"
@@ -96,15 +99,15 @@ do_compile:prepend() {
 
     install -d ${B}/bin
     ${CXX} ${CXXFLAGS} -I${STAGING_INCDIR} \
-        ${UNPACKDIR}/extension/src/main.cpp ${STAGING_LIBDIR}/libjson-c.a -lm ${LDFLAGS} \
+        ${ONEKVM_EXTENSION_SOURCE}/src/main.cpp ${STAGING_LIBDIR}/libjson-c.a -lm ${LDFLAGS} \
         -o ${B}/bin/onekvm-easytier-controller
 }
 
 do_install() {
-    oe_runmake -C ${UNPACKDIR}/extension install \
+    oe_runmake -C ${ONEKVM_EXTENSION_SOURCE} install \
         CONTROLLER_BINARY=${B}/bin/onekvm-easytier-controller \
         RUNTIME_BINARY=${B}/target/${RUST_HOST_SYS}/${BUILD_DIR}/easytier-core \
         CLI_BINARY=${B}/target/${RUST_HOST_SYS}/${BUILD_DIR}/easytier-cli \
-        DESTDIR=${D} PREFIX=${ONEKVM_EXTENSION_ROOT} \
+        DESTDIR=${D} PREFIX=${ONEKVM_EXTENSION_ROOT} BINDIR=${bindir} \
         VERSION=${PV} ARCH=${TARGET_ARCH}
 }
