@@ -125,7 +125,7 @@
             h('label', [h('span', labels.networkName), h(NInput, { value: networkName.value, maxlength: 64, disabled: Boolean(busy.value), 'onUpdate:value': (value) => { networkName.value = value } })]),
             h('label', [h('span', labels.networkSecret), h(NInput, { value: networkSecret.value, type: 'password', showPasswordOn: 'click', maxlength: 4096, disabled: Boolean(busy.value), 'onUpdate:value': (value) => { networkSecret.value = value } })]),
             h('label', { class: 'ok-span' }, [h('span', labels.sharedNodes), h(NInput, { value: peers.value, type: 'textarea', rows: 3, maxlength: 1024, disabled: Boolean(busy.value), 'onUpdate:value': (value) => { peers.value = value } })]),
-            h('label', { class: 'ok-switch' }, [h('span', labels.dhcp), h(NSwitch, { value: dhcp.value, disabled: Boolean(busy.value), 'onUpdate:value': (value) => { dhcp.value = value } })]),
+            h('label', [h('span', labels.dhcp), h(NSwitch, { value: dhcp.value, disabled: Boolean(busy.value), 'onUpdate:value': (value) => { dhcp.value = value } })]),
             h('label', [h('span', labels.ipv4), h(NInput, { value: ipv4.value, maxlength: 18, disabled: Boolean(busy.value) || dhcp.value, 'onUpdate:value': (value) => { ipv4.value = value } })]),
             h('label', [h('span', labels.hostname), h(NInput, { value: hostname.value, maxlength: 253, disabled: Boolean(busy.value), 'onUpdate:value': (value) => { hostname.value = value } })]),
             h('label', [h('span', labels.listenPort), h(NInputNumber, { value: listenPort.value, min: 1, max: 65535, disabled: Boolean(busy.value), 'onUpdate:value': (value) => { listenPort.value = value ?? 11010 } })]),
@@ -149,6 +149,7 @@
       .ok-muted, .ok-card small { color: var(--n-text-color-3, #888); }
       .ok-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 13px; }
       .ok-grid > label { display: grid; gap: 7px; min-width: 0; }
+      .ok-grid .n-switch { justify-self: start; }
       .ok-span { grid-column: 1 / -1; }
       .ok-switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
       .ok-save { display: flex; justify-content: flex-end; }
