@@ -194,5 +194,25 @@
       "--health"
     ],
     "timeout_seconds": 5
-  }
+  },
+  "contributions": [
+    {
+      "point": "screen-display.app",
+      "id": "main",
+      "version": 1,
+      "data": {
+        "title": "EasyTier",
+        "i18n": {
+          "zh": "EasyTier"
+        },
+        "glyph": "E",
+        "bundle": "screen-app", "runtime": "pocketjs-vue-vapor", "bridge_version": 2, "permissions": {"rpc": [{"methods": ["status"], "configure": true}]},
+        "controls": [
+          "touch",
+          "rotary"
+        ],
+        "order": 40
+      }
+    }
+  ]
 }

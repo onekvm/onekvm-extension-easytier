@@ -58,6 +58,7 @@ FILES:${PN} = "\
     ${ONEKVM_EXTENSION_ROOT}/bin/onekvm-easytier-controller \
     ${ONEKVM_EXTENSION_ROOT}/manifest.json \
     ${ONEKVM_EXTENSION_ROOT}/web \
+    ${ONEKVM_EXTENSION_ROOT}/screen-app \
 "
 FILES:easytier = "\
     ${bindir}/easytier-core \
