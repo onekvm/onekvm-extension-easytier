@@ -32,3 +32,7 @@ NanoKVM 的 `extension_memory_budget` 是 64M。启用 EasyTier（32M）时，�
 
 GNU General Public License v3.0，见 [`LICENSE`](LICENSE)。随包提供的
 EasyTier 继续使用上游 LGPL-3.0 许可证。
+
+可选屏幕 App 的 TypeScript/TSX 源码位于
+[`screen-app/src`](screen-app/src)，按组件、状态和语言包拆分。
+构建方式见 [`screen-app/README.md`](screen-app/README.md)；JS/PAK 由打包流程生成，不提交到 Git。

@@ -8,7 +8,7 @@ LIC_FILES_CHKSUM = "\
     file://${ONEKVM_EXTENSION_SOURCE}/LICENSE;md5=1ebbd3e34237af26da5dc08a4e440464 \
     file://LICENSE;md5=3000208d539ec061b899bce1d9ce9404 \
 "
-PR = "r5"
+PR = "r6"
 
 ONEKVM_COMPONENT_GIT_URI ??= "git://github.com/onekvm/onekvm-extension-easytier.git;protocol=https;branch=main"
 ONEKVM_COMPONENT_SRCREV ??= ""
@@ -25,7 +25,7 @@ SRCREV_easytier = "8428a89d2dabc94c97d370ec607c6ca142473626"
 S = "${UNPACKDIR}/easytier"
 CARGO_SRC_DIR = "easytier"
 
-inherit cargo onekvm-extension
+inherit cargo onekvm-extension onekvm-screen-app
 
 # cargo_common_do_patch_paths would treat destsuffix=easytier as crate
 # "easytier" (the workspace root) and strip git sources from Cargo.lock.

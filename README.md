@@ -35,3 +35,8 @@ another large plugin such as container or RustDesk is disabled.
 
 GNU General Public License v3.0, see [`LICENSE`](LICENSE). Upstream EasyTier
 keeps its own LGPL-3.0 license.
+
+The optional screen App has modular TypeScript/TSX source in
+[`screen-app/src`](screen-app/src). See [`screen-app/README.md`](screen-app/README.md)
+for its components and build command. JS/PAK runtime files are generated during
+packaging and are not tracked in Git.
