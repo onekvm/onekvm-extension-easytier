@@ -205,6 +205,7 @@
         "i18n": {
           "zh": "EasyTier"
         },
+        "icon": "icon.bin",
         "bundle": "screen-app", "runtime": "pocketjs-vue-vapor", "bridge_version": 2, "permissions": {"rpc": [{"methods": ["status"], "configure": true}]},
         "controls": [
           "touch",

@@ -6,8 +6,8 @@ The App's editable source lives in `src/`:
 - `config.ts` declares extension identity, actions and business validation.
 - `status.ts` formats this extension's status for display.
 
-Rotary/touch input, theme and font slots, status cards, action buttons, RPC
-polling and common translations come from `@onekvm/screen-ui`, maintained in
+Rotary/touch input, theme and font slots, status cards, action buttons, event-driven RPC
+state and common translations come from `@onekvm/screen-ui`, maintained in
 `onekvm-screen-display/packages/screen-ui`. Change shared behavior there;
 do not copy it into this extension.
 
@@ -27,3 +27,8 @@ to ignored `dist/main.vue-vapor.js` and `dist/main.vue-vapor.pak`.
 `onekvm-distro` supplies fixed SDK source via `onekvm-screen-ui-native` and
 builds the App before packaging it. IPKs contain the compiled JS and font
 resources; source modules and build dependencies stay off the device.
+
+`src/logo.png` is the 64×64 launcher/header asset, derived from the same
+artwork as the Web manifest (Lucide Radio for Wake on LAN). The shared build
+writes `icon.bin` from these pixels. Install it beside JS/PAK and declare
+`icon: "icon.bin"` in the screen contribution.
