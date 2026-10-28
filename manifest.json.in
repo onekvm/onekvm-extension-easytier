@@ -82,8 +82,6 @@
       "network_secret",
       "peers",
       "dhcp",
-      "ipv4",
-      "hostname",
       "listen_port"
     ],
     "properties": {
@@ -146,6 +144,8 @@
         "title": "Virtual IPv4",
         "default": "",
         "maxLength": 18,
+        "enabled_when": {"field": "dhcp", "equals": false},
+        "required_when": {"field": "dhcp", "equals": false},
         "i18n": {
           "default": "Virtual IPv4",
           "zh": "虚拟 IPv4",
